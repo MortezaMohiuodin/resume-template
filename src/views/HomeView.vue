@@ -1,5 +1,6 @@
 <template>
-  <div class="bg-white shadow-custom" style="direction: rtl">
+  <button @click="handleClick">take pic</button>
+  <div id="capture" class="bg-white shadow-custom" style="direction: rtl">
     <div class="grid grid-cols-12 h-[950px]">
       <div class="col-span-4 border-l-4 border-gray-300">
         <div>
@@ -67,6 +68,33 @@
     </div>
   </div>
 </template>
+<script setup>
+import * as htmlToImage from 'html-to-image';
+import html2canvas from 'html2canvas'
+import { jsPDF } from "jspdf";
+const handleClick = ()=>{
+  var node = document.getElementById('capture');
+  htmlToImage.toPng(node)
+  .then(function (dataUrl) {
+    var img = new Image();
+    img.src = dataUrl;
+    document.body.appendChild(img);
+  })
+  .catch(function (error) {
+    console.error('oops, something went wrong!', error);
+  });
+  
+    // html2canvas(document.querySelector("#capture")).then(canvas => {
+    //   document.body.appendChild(canvas)
+
+    //   var imgData = canvas.toDataURL("image/jpeg", 1.0);
+    //   var pdf = new jsPDF();
+
+    //   pdf.addImage(imgData, 'JPEG', 0, 0);
+    //   pdf.save("download.pdf");
+    // });
+}
+</script>
 <style>
 .shadow-custom {
   box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
